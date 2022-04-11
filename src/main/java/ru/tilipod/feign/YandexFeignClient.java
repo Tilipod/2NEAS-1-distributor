@@ -17,5 +17,7 @@ public interface YandexFeignClient {
 
     @GetMapping("/disk/resources")
     ResponseEntity<YandexResourceResponse> getMetadataForFiles(@RequestHeader String authorization,
-                                                               @RequestParam String path);
+                                                               @RequestParam String path,
+                                                               @RequestParam Integer limit,
+                                                               @RequestParam Integer offset);
 }

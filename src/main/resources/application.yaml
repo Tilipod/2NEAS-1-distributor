@@ -25,9 +25,6 @@ eureka:
 storage:
   pathToSave: ${PATH_TO_SAVE:C:/}
 
-queues:
-  distributorResult: "distributorResult"
-
 cloudUrls:
   yandex: "https://cloud-api.yandex.net/v1"
 
@@ -41,4 +38,4 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 30000
-        loggerLevel: ${FEIGN_LOG_LEVEL:full}
+        loggerLevel: ${FEIGN_LOG_LEVEL:BASIC}

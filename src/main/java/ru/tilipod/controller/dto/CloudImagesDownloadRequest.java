@@ -15,6 +15,9 @@ public class CloudImagesDownloadRequest {
     @ApiModelProperty("Путь к корневой папке в облаке")
     private String pathFrom;
 
+    @ApiModelProperty("Путь к корневой папке на диске")
+    private String pathTo;
+
     @ApiModelProperty("Тип облака")
     private CloudType cloudType;
 }
