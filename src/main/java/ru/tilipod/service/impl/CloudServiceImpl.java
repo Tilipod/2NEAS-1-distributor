@@ -34,7 +34,7 @@ public class CloudServiceImpl implements CloudService {
 
     @Override
     @Async
-    public void downloadImagesFromCloud(Integer taskId, CloudImagesDownloadRequest request) {
+    public void downloadImagesFromCloud(CloudImagesDownloadRequest request) {
         ResponseEntity<YandexResourceResponse> response;
         try {
             response = yandexFeignClient.getMetadataForFiles(request.getToken(), request.getPathFrom(), PAGE_ITEMS_SIZE, 0);
@@ -43,7 +43,7 @@ public class CloudServiceImpl implements CloudService {
             }
         } catch (Exception e) {
             log.error("Ошибка подключения к облаку: {}", e.getMessage());
-            rabbitSender.sendErrorToScheduler(DistributeResultErrorMessage.createMessage(taskId, e));
+            rabbitSender.sendErrorToScheduler(DistributeResultErrorMessage.createMessage(request.getTaskId(), e));
             return;
         }
 
@@ -51,11 +51,11 @@ public class CloudServiceImpl implements CloudService {
             downloadAllFileFromDirCloud(request.getToken(), request.getPathFrom(), request.getPathTo(), response.getBody());
         } catch (Exception e) {
             log.error("Ошибка скачивания файла из облака: {}", e.getMessage());
-            rabbitSender.sendErrorToScheduler(DistributeResultErrorMessage.createMessage(taskId, e));
+            rabbitSender.sendErrorToScheduler(DistributeResultErrorMessage.createMessage(request.getTaskId(), e));
             return;
         }
 
-        rabbitSender.sendSuccessToScheduler(DistributeResultSuccessMessage.createMessage(taskId, request.getPathTo()));
+        rabbitSender.sendSuccessToScheduler(DistributeResultSuccessMessage.createMessage(request.getTaskId(), request.getPathTo()));
     }
 
     private void downloadAllFileFromDirCloud(String token, String pathFrom,

@@ -9,6 +9,9 @@ import ru.tilipod.enums.CloudType;
 @ApiModel(value = "CloudImagesDownloadRequest", description = "Запрос на выгрузку изображений из облака на диск")
 public class CloudImagesDownloadRequest {
 
+    @ApiModelProperty(value = "ID задачи")
+    private Integer taskId;
+
     @ApiModelProperty("Токен для авторизации в облаке")
     private String token;
 

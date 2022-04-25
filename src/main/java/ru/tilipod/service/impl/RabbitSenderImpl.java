@@ -37,10 +37,10 @@ public class RabbitSenderImpl implements RabbitSender {
     @Override
     public void sendErrorToScheduler(DistributeResultErrorMessage message) {
         try {
-            rabbitTemplate.send(ExchangeNames.DISTRIBUTOR, RoutingKeys.DISTRIBUTOR_RESULT_ERROR_KEY, createMessage(message));
+            rabbitTemplate.send(ExchangeNames.ERROR, RoutingKeys.DISTRIBUTOR_RESULT_KEY, createMessage(message));
         } catch (JsonProcessingException e1) {
             log.error("Ошибка сериализации {}: {}", message.getClass().getSimpleName(), e1.getMessage());
-            rabbitTemplate.send(ExchangeNames.DISTRIBUTOR, RoutingKeys.DISTRIBUTOR_RESULT_ERROR_KEY,
+            rabbitTemplate.send(ExchangeNames.ERROR, RoutingKeys.DISTRIBUTOR_RESULT_KEY,
                     MessageBuilder.withBody(String.format(JSON_PROCESSING_ERROR_MESSAGE, message.getTaskId(), e1.getMessage())
                                     .getBytes(StandardCharsets.UTF_8))
                             .build()
@@ -51,10 +51,10 @@ public class RabbitSenderImpl implements RabbitSender {
     @Override
     public void sendSuccessToScheduler(DistributeResultSuccessMessage message) {
         try {
-            rabbitTemplate.send(ExchangeNames.DISTRIBUTOR, RoutingKeys.DISTRIBUTOR_RESULT_SUCCESS_KEY, createMessage(message));
+            rabbitTemplate.send(ExchangeNames.SUCCESS, RoutingKeys.DISTRIBUTOR_RESULT_KEY, createMessage(message));
         } catch (JsonProcessingException e1) {
             log.error("Ошибка сериализации {}: {}", message.getClass().getSimpleName(), e1.getMessage());
-            rabbitTemplate.send(ExchangeNames.DISTRIBUTOR, RoutingKeys.DISTRIBUTOR_RESULT_ERROR_KEY,
+            rabbitTemplate.send(ExchangeNames.ERROR, RoutingKeys.DISTRIBUTOR_RESULT_KEY,
                     MessageBuilder.withBody(String.format(JSON_PROCESSING_ERROR_MESSAGE, message.getTaskId(), e1.getMessage())
                                     .getBytes(StandardCharsets.UTF_8))
                             .build()

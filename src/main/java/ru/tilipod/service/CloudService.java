@@ -4,6 +4,6 @@ import ru.tilipod.controller.dto.CloudImagesDownloadRequest;
 
 public interface CloudService {
 
-    void downloadImagesFromCloud(Integer taskId, CloudImagesDownloadRequest request);
+    void downloadImagesFromCloud(CloudImagesDownloadRequest request);
 
 }
