@@ -103,8 +103,13 @@ public class CloudServiceImpl implements CloudService {
                 if (YandexItemType.DIRECTORY.getName().equals(item.getType())) {
                     DownloadResult inResult = downloadAllFileFromDirCloud(token, newPathFrom, newPathTo, result.getTotalOffset(),
                             maxCounts - result.getDownloadCount(), yandexFeignClient.getMetadataForFiles(token, newPathFrom, PAGE_ITEMS_SIZE, 0L).getBody());
-                    result.setDownloadCount(result.getDownloadCount() + inResult.getDownloadCount());
-                    result.setTotalOffset(inResult.getTotalOffset());
+
+                    if (inResult.getDownloadCount() != 0) {
+                        result.setDownloadCount(result.getDownloadCount() + inResult.getDownloadCount());
+                        result.setTotalOffset(0L);
+                    } else {
+                        result.setTotalOffset(inResult.getTotalOffset());
+                    }
                 } else if (YandexItemType.FILE.getName().equals(item.getType())) {
                     try {
                         downloadFileFromCloud(item.getFile(), newPathTo, token);
@@ -126,9 +131,6 @@ public class CloudServiceImpl implements CloudService {
             currentOffset += PAGE_ITEMS_SIZE;
             response = yandexFeignClient.getMetadataForFiles(token, pathFrom, PAGE_ITEMS_SIZE, currentOffset).getBody();
         }
-
-        // Если прошерстили всю директорию, значит скачивание в след. нужно начинать с начала
-        result.setTotalOffset(0L);
 
         return result;
     }
