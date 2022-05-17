@@ -12,6 +12,12 @@ public class CloudImagesDownloadRequest {
     @ApiModelProperty(value = "ID задачи")
     private Integer taskId;
 
+    @ApiModelProperty(value = "Общее кол-во уже выгруженных файлов")
+    private Long totalOffset;
+
+    @ApiModelProperty(value = "Максимальное кол-во файлов для скачивания")
+    private Long maxCounts;
+
     @ApiModelProperty("Токен для авторизации в облаке")
     private String token;
 

@@ -8,4 +8,6 @@ import java.util.List;
 public class YandexEmbedded {
 
     private List<YandexItem> items;
+
+    private Long total;
 }
